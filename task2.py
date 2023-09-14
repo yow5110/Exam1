@@ -1,64 +1,64 @@
 """
+Task 2 (35 pts): 
+        We will extend the previous program to *two* particles. 
+        Here, instead of initializing xpos = some value for one particle, 
+        we initialize a list of x positions for two particles,  xpos_all= [xpos of particle 1, xpos of particle 2].
+        Same with xvel, ypos, and yvel.
 
-TASK 2 (30 pts):  In this task, we will still consider a single particle but now moving in two dimensions. 
-        The 2D box limits the movement of the particle between 0 and 1 in both the x and y directions, 
-        with hard reflecting walls on all sides. 
-        1. Modify just the move() function so that if the particle hits a wall, its velocity will be reversed.
-            Use line 58 (where the move function is called) as your hint.
-            Careful of the number of variables entering as arguments and the variables returned, as well as their ordering! 
-        2. Add xlabel "x position"
-        3. Add ylabel "y position"
-        4. Comment on the trajectory of the particle you see. Where did it start and end?
-            How many times did it hit the walls?
- 
-EXPECTED OUTCOME:   Instead of plotting xpos against timestep, here we will plot xpos against ypos, 
-                    so that we can show a trajectory of a particle moving and bouncing inside a 2D box.
-                    You should see the particle hit the walls of the 2D box many times, 
+        1. Copy the entire block of the move() function from the previous task. This block will stay the same.
+        
+        2. Complete the rest of the code to implement refective walls. Inspect your plot to make sure the code works.
+        
+        3. Reconstruct the two t_range loops to simplify them, by adding another layer of loop over the particles.
+        
+        Hint: One way to do this is (note the indentation)
+            
+        for i in range(2):
+            #initialize empty lists to contain positions
+            for t in t_range:
+                # update positions and velocities of particle i
+                # append xpos to a list and ypos to a list
+            # make plots using these lists
+           
+        4. Add xlabel "x position [m]" and ylabel "y position [m]"
+        
+        
+EXPECTED OUTCOME:   You should see the trajectories of two particles in a 2D box,
                     similar to the attached "2-sample.png" file.
 
-Parameters and variables
- 
-    dt: lenght of the timestep (in arbitrary units)
-    xbox: size of box along the x axis (in arbitrary units)
-    xpos: x component of particles positions (in arbitrary units)
-    xvel: x component of particles velocities (in arbitrary units)
-    ybox: size of box along the y axis (in arbitrary units)
-    ypos: y component of particles positions (in arbitrary units)
-    yvel: y component of particles velocities (in arbitrary units)
-    
 """
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Setup simulation parameters
-dt = 0.02 
+dt = 0.02
+t_range = np.arange(0,5,dt)
+
 xbox = 1.0 # The upper bound of our box along x
 ybox = 1.0 # The upper bound of our box along y
 
 # Setup starting configuration of the system
-xpos=0.0 # the particle's initial x position
-xvel=1.0 # the particle's initial x velocity
-ypos=0.0 # the particle's initial y position
-yvel=0.3 # the particle's initial y velocity
+xpos_all =[0.0, 1.0]  #initial x position of particle 1 and 2; same below
+xvel_all= [1.0, -0.07] 
+ypos_all =[0.0, 0.0]
+yvel_all =[0.3, 0.09]
 
-def move(dt,xpos,xvel,xbox): #you need to add three more arguments here for y
-    
-    xpos = xpos + dt*xvel
-    ypos = #... you need to update ypos
-    
-    #if xpos ... 
-        # do something to xvel
-    #if ypos ... 
-        # do something to yvel
-        
-    return xpos, xvel # you need to return two xpos and xvel here
 
-t_total = 250
-t_range = range(t_total)
+########################################################################
+# Copy the entire block of move funtion from the previous task here.   #
+# It will stay the same in this Task.                                  #
+########################################################################
 
 for t in t_range:
-    xpos, xvel, ypos, yvel = move(dt, xpos, xvel, xbox, ypos, yvel, ybox)
-    plt.plot(xpos, ypos, 'b.')  # plot a single dot at (xpos, ypos)
+    xpos_all[0], xvel_all[0], ypos_all[0], yvel_all[0] = move( xpos_all[0], xvel_all[0], ypos_all[0], yvel_all[0])
+    #some appending here 
+#plot for particle 1 here    
     
+for t in t_range:    
+    xpos_all[1], xvel_all[1], ypos_all[1], yvel_all[1] = move( xpos_all[1], xvel_all[1], ypos_all[1], yvel_all[1])
+    #some appending here 
+#plot for particle 2 here    
 
 plt.ylim(0,1)
 plt.xlim(0,1)

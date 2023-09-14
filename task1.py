@@ -1,66 +1,59 @@
 """
-Exam 1 Take-Home Project
 
-Suppose a particle starts out at an x position of xpos = 0, with an initial velocity towards the right at yvel=1.0. Everything is kept unitless for simplicity.
-We want to simulate its movement starting from time t=0 as t increases.
-
-We'll do this in discrete steps. After a short time of dt passes, the particle will move right by a tiny amount. 
-By how much? Since xvel = d(xpos)/dt, the change in xpos will be xvel*dt. 
-So in python we can write xpos = xpos + xvel*dt
-After this time step, the state of xpos will be updated, the state of xvel will remain the same.
-A move() function is provided below that achieves exactly this, advancing time by one small step.
-
-We will advance time by taking one time step like this after another - like taking snapshots of the particles motion. 
-This means we will call the move() function many times to continually update xpos and xvel.
-
-
-TASK 1 (35 pts): 
-    This program will perform a simulation of a single particle moving in one dimension inside a box. 
-    The box limits the movement of the particle between 0 and 1, with hard reflecting walls. 
-
-    If you run the following program, you'll see a a plot 
-    showing that the particle's x position (vertical axis) increases with time (horizontal axis) 
-    until it reachs the other end of the box at 1.
-
-    1. Modify just the move() function so that if the particle hits a wall, its velocity will be reversed.
-    2. Add xlabel "timestep"
-    3. Add ylabel "x position"
+TASK 1 (35 pts):  Consider a single particle moving in two dimensions. 
+        The 2D box limits the movement of the particle between 0 and 1 in both the x and y directions, 
+        with hard reflecting walls on all sides. 
+        1. Complete the following code to simulated motion in 2D.
+           Careful of the number of variables entering as arguments and the variables returned, 
+           as well as their ordering! 
+           Use the move() function call in the for loop as your hint.
+           
+        2. Implement the reflecting walls: if the particle hits any of the four walls, it should bounce back.
+        
+        3. Add xlabel "x position [m]" and ylabel "y position [m]"
+        
+        4. Comment on the trajectory of the particle you see. Where did it start and end?
+            How many times did it hit the walls?
  
-EXPECTED OUTCOME: A figure plotting the x position of a single particle against time, showing that the particle bounces back,
-                  similar to the attached "1-sample.png" file.
-
+EXPECTED OUTCOME:   Here we will plot xpos against ypos, 
+                    so that we can show a trajectory of a particle moving and bouncing inside a 2D box.
+                    You should see the particle hit the walls of the 2D box many times, 
+                    similar to the attached "1-sample.png" file.
+ 
 Parameters and variables
- 
-    dt: length of the timestep (in arbitrary units)
-    xbox: size of box along the x axis (in arbitrary units)
-    xpos: x component of particles positions (in arbitrary units)
-    xvel: x component of particles velocities (in arbitrary units)
+
+    dt: length of the timestep (in seconds)
+    xbox: size of box along the x axis (in meters)
+    xpos: x component of particles positions (in meters)
+    xvel: x component of particles velocities (in meters/second)
+    ybox: size of box along the y axis (in meters)
+    ypos: y component of particles positions (in meters)
+    yvel: y component of particles velocities (in meters/second)
 """
-
 import matplotlib.pyplot as plt
+import numpy as np
 
-dt = 0.02 # This is our time step
-xbox = 1.0 # The upper bound of our box
+# Setup simulation parameters
+dt = 0.02 
+t_range = np.arange(0,5,dt)
+
+xbox = 1.0 # The upper bound of our box along x
+ybox = 1.0 # The upper bound of our box along y
 
 # Setup starting configuration of the system
-xpos = 0.0 # we start with the particle at the origin
-xvel = 1.0 # we start with some positive velocity along the x axis.
+xpos=0.0 # initial x position
+xvel=1.0 # initial x velocity
+ypos=0.0 # initial y position
+yvel=0.3 # initial y velocity
 
-# The following is the function responsible of describing the motion of a particle during a short timestep
-def move(dt,xpos,xvel,xbox):
-    xpos = xpos + xvel*dt
-    #if xpos ... 
-        # do something to xvel
+def move(xpos,xvel): 
+    xpos = xpos + xvel * dt
     return xpos, xvel
 
-t_total = 80 #total timesteps we are simulating
-t_range = range(t_total)
-
 for t in t_range:
-    xpos, xvel = move(dt, xpos, xvel, xbox)  #move the particle by advancing one timestep
-    plt.plot(t, xpos, 'b.')  # plot a single blue dot at (t,xpos)
-    #end of loop
+    xpos, xvel, ypos, yvel = move(xpos, xvel, ypos, yvel)
+    
 
-#add xlabel and ylabel here
 plt.ylim(0,1)
+plt.xlim(0,1)
 plt.show()
